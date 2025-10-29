@@ -193,6 +193,14 @@ function App() {
           }
         />
         <Route
+          path='/oauth/google'
+          element={
+            <Suspense fallback={<Loading></Loading>} key={location.pathname}>
+              <OAuth2Callback type='google'></OAuth2Callback>
+            </Suspense>
+          }
+        />
+        <Route
           path='/oauth/oidc'
           element={
             <Suspense fallback={<Loading></Loading>}>

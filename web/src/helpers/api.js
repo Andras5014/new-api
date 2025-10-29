@@ -255,6 +255,15 @@ export async function onGitHubOAuthClicked(github_client_id) {
   );
 }
 
+export async function onGoogleOAuthClicked(google_client_id) {
+  const state = await getOAuthState();
+  if (!state) return;
+  const redirectUri = `${window.location.origin}/oauth/google`;
+  window.open(
+    `https://accounts.google.com/o/oauth2/v2/auth?client_id=${google_client_id}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=openid%20profile%20email&state=${state}`,
+  );
+}
+
 export async function onLinuxDOOAuthClicked(linuxdo_client_id) {
   const state = await getOAuthState();
   if (!state) return;

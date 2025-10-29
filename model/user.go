@@ -30,6 +30,7 @@ type User struct {
 	OidcId           string         `json:"oidc_id" gorm:"column:oidc_id;index"`
 	WeChatId         string         `json:"wechat_id" gorm:"column:wechat_id;index"`
 	TelegramId       string         `json:"telegram_id" gorm:"column:telegram_id;index"`
+	GoogleId         string         `json:"google_id" gorm:"column:google_id;index"`
 	VerificationCode string         `json:"verification_code" gorm:"-:all"`                                    // this field is only for Email verification, don't save it to database!
 	AccessToken      *string        `json:"access_token" gorm:"type:char(32);column:access_token;uniqueIndex"` // this token is for system management
 	Quota            int            `json:"quota" gorm:"type:int;default:0"`
@@ -905,6 +906,20 @@ func (user *User) FillUserByLinuxDOId() error {
 		return errors.New("linux do id is empty")
 	}
 	err := DB.Where("linux_do_id = ?", user.LinuxDOId).First(user).Error
+	return err
+}
+
+func IsGoogleIdAlreadyTaken(googleId string) bool {
+	var user User
+	err := DB.Unscoped().Where("google_id = ?", googleId).First(&user).Error
+	return !errors.Is(err, gorm.ErrRecordNotFound)
+}
+
+func (user *User) FillUserByGoogleId() error {
+	if user.GoogleId == "" {
+		return errors.New("google id is empty")
+	}
+	err := DB.Where("google_id = ?", user.GoogleId).First(user).Error
 	return err
 }
 

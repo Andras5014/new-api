@@ -38,6 +38,7 @@ func InitOptionMap() {
 	common.OptionMap["PasswordRegisterEnabled"] = strconv.FormatBool(common.PasswordRegisterEnabled)
 	common.OptionMap["EmailVerificationEnabled"] = strconv.FormatBool(common.EmailVerificationEnabled)
 	common.OptionMap["GitHubOAuthEnabled"] = strconv.FormatBool(common.GitHubOAuthEnabled)
+	common.OptionMap["GoogleOAuthEnabled"] = strconv.FormatBool(common.GoogleOAuthEnabled)
 	common.OptionMap["LinuxDOOAuthEnabled"] = strconv.FormatBool(common.LinuxDOOAuthEnabled)
 	common.OptionMap["TelegramOAuthEnabled"] = strconv.FormatBool(common.TelegramOAuthEnabled)
 	common.OptionMap["WeChatAuthEnabled"] = strconv.FormatBool(common.WeChatAuthEnabled)
@@ -91,6 +92,9 @@ func InitOptionMap() {
 	common.OptionMap["PayMethods"] = operation_setting.PayMethods2JsonString()
 	common.OptionMap["GitHubClientId"] = ""
 	common.OptionMap["GitHubClientSecret"] = ""
+	common.OptionMap["GoogleClientID"] = ""
+	common.OptionMap["GoogleClientSecret"] = ""
+	common.OptionMap["GoogleRedirectURL"] = ""
 	common.OptionMap["TelegramBotToken"] = ""
 	common.OptionMap["TelegramBotName"] = ""
 	common.OptionMap["WeChatServerAddress"] = ""
@@ -220,6 +224,8 @@ func updateOptionMap(key string, value string) (err error) {
 			common.EmailVerificationEnabled = boolValue
 		case "GitHubOAuthEnabled":
 			common.GitHubOAuthEnabled = boolValue
+		case "GoogleOAuthEnabled":
+			common.GoogleOAuthEnabled = boolValue
 		case "LinuxDOOAuthEnabled":
 			common.LinuxDOOAuthEnabled = boolValue
 		case "WeChatAuthEnabled":
@@ -348,6 +354,12 @@ func updateOptionMap(key string, value string) (err error) {
 		common.GitHubClientId = value
 	case "GitHubClientSecret":
 		common.GitHubClientSecret = value
+	case "GoogleClientID":
+		common.GoogleClientID = value
+	case "GoogleClientSecret":
+		common.GoogleClientSecret = value
+	case "GoogleRedirectURL":
+		common.GoogleRedirectURL = value
 	case "LinuxDOClientId":
 		common.LinuxDOClientId = value
 	case "LinuxDOClientSecret":

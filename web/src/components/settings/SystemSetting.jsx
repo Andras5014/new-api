@@ -52,6 +52,10 @@ const SystemSetting = () => {
     GitHubOAuthEnabled: '',
     GitHubClientId: '',
     GitHubClientSecret: '',
+    GoogleOAuthEnabled: '',
+    GoogleClientID: '',
+    GoogleClientSecret: '',
+    GoogleRedirectURL: '',
     'oidc.enabled': '',
     'oidc.client_id': '',
     'oidc.client_secret': '',
@@ -465,6 +469,33 @@ const SystemSetting = () => {
       options.push({
         key: 'GitHubClientSecret',
         value: inputs.GitHubClientSecret,
+      });
+    }
+
+    if (options.length > 0) {
+      await updateOptions(options);
+    }
+  };
+
+  const submitGoogleOAuth = async () => {
+    const options = [];
+
+    if (originInputs['GoogleClientID'] !== inputs.GoogleClientID) {
+      options.push({ key: 'GoogleClientID', value: inputs.GoogleClientID });
+    }
+    if (
+      originInputs['GoogleClientSecret'] !== inputs.GoogleClientSecret &&
+      inputs.GoogleClientSecret !== ''
+    ) {
+      options.push({
+        key: 'GoogleClientSecret',
+        value: inputs.GoogleClientSecret,
+      });
+    }
+    if (originInputs['GoogleRedirectURL'] !== inputs.GoogleRedirectURL) {
+      options.push({
+        key: 'GoogleRedirectURL',
+        value: inputs.GoogleRedirectURL,
       });
     }
 
@@ -1015,6 +1046,15 @@ const SystemSetting = () => {
                         {t('允许通过 GitHub 账户登录 & 注册')}
                       </Form.Checkbox>
                       <Form.Checkbox
+                        field='GoogleOAuthEnabled'
+                        noLabel
+                        onChange={(e) =>
+                          handleCheckboxChange('GoogleOAuthEnabled', e)
+                        }
+                      >
+                        {t('允许通过 Google 账户登录 & 注册')}
+                      </Form.Checkbox>
+                      <Form.Checkbox
                         field='LinuxDOOAuthEnabled'
                         noLabel
                         onChange={(e) =>
@@ -1407,6 +1447,49 @@ const SystemSetting = () => {
                   </Row>
                   <Button onClick={submitGitHubOAuth}>
                     {t('保存 GitHub OAuth 设置')}
+                  </Button>
+                </Form.Section>
+              </Card>
+              <Card>
+                <Form.Section text={t('配置 Google OAuth App')}>
+                  <Text>{t('用以支持通过 Google 进行登录注册')}</Text>
+                  <Banner
+                    type='info'
+                    description={`${t('授权重定向 URI 填')} ${inputs.ServerAddress ? inputs.ServerAddress : t('网站地址')}/oauth/google`}
+                    style={{ marginBottom: 20, marginTop: 16 }}
+                  />
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}
+                  >
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                      <Form.Input
+                        field='GoogleClientID'
+                        label={t('Google Client ID')}
+                        placeholder={t('输入 Google OAuth 的 Client ID')}
+                      />
+                    </Col>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                      <Form.Input
+                        field='GoogleClientSecret'
+                        label={t('Google Client Secret')}
+                        type='password'
+                        placeholder={t('敏感信息不会发送到前端显示')}
+                      />
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}
+                  >
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                      <Form.Input
+                        field='GoogleRedirectURL'
+                        label={t('Google Redirect URL')}
+                        placeholder={t('留空则使用默认值')}
+                      />
+                    </Col>
+                  </Row>
+                  <Button onClick={submitGoogleOAuth}>
+                    {t('保存 Google OAuth 设置')}
                   </Button>
                 </Form.Section>
               </Card>
